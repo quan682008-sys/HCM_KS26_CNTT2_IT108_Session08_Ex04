@@ -1,0 +1,27 @@
+﻿1. So sánh > và >>
+Tiêu chí
+	>
+	>>
+	Cơ chế hoạt động
+	Ghi đè nội dung tệp
+	Ghi nối tiếp vào cuối tệp
+	Rủi ro mất dữ liệu
+	Cao, nội dung cũ bị xóa
+	Thấp hơn, giữ lại dữ liệu cũ
+	Ca sáng
+	Phù hợp khi tạo báo cáo mới
+	Phù hợp khi bổ sung báo cáo
+	Theo dõi 24/7
+	Không phù hợp nếu cần lưu lịch sử liên tục
+	Phù hợp để lưu lỗi phát sinh liên tục
+	Encoding
+	Mặc định thường là UTF-16 LE trong Windows PowerShell 5.1
+	Cũng thường là UTF-16 LE trong Windows PowerShell 5.1
+	2. Phân tích rủi ro
+Nếu An vô tình dùng > vào cuối tháng, tệp daily_report.txt sẽ bị ghi đè và dữ liệu báo cáo của 30 ngày trước có thể bị mất. Đây là rủi ro lớn khi lưu trữ nhật ký hệ thống.
+Ngược lại, >> sẽ giữ nội dung cũ và thêm kết quả mới vào cuối tệp, phù hợp với việc theo dõi lỗi liên tục.
+3. Lựa chọn giải pháp
+Nên sử dụng Add-Content để bổ sung các dòng lỗi vào báo cáo mà không xóa dữ liệu cũ.
+Get-Content .\server.log | Select-String "ERROR" | Add-Content -Path .\daily_report.txt -Encoding utf8
+Lệnh này đọc tệp log, lọc các dòng chứa ERROR, sau đó ghi nối tiếp kết quả vào daily_report.txt bằng UTF-8.
+Nếu cần tạo báo cáo mới từ đầu, có thể dùng > hoặc Out-File để ghi đè có chủ đích.
